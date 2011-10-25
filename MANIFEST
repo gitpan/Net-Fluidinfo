@@ -3,7 +3,6 @@ MANIFEST
 Makefile.PL
 README
 lib/Net/Fluidinfo.pm
-lib/Net/Fluidinfo/ACL.pm
 lib/Net/Fluidinfo/Base.pm
 lib/Net/Fluidinfo/JSON.pm
 lib/Net/Fluidinfo/HasObject.pm
@@ -11,7 +10,6 @@ lib/Net/Fluidinfo/HasPath.pm
 lib/Net/Fluidinfo/Namespace.pm
 lib/Net/Fluidinfo/Object.pm
 lib/Net/Fluidinfo/Permission.pm
-lib/Net/Fluidinfo/Policy.pm
 lib/Net/Fluidinfo/Tag.pm
 lib/Net/Fluidinfo/User.pm
 lib/Net/Fluidinfo/Value.pm
@@ -27,11 +25,9 @@ t/00-fluidinfo.t
 t/01-object.t
 t/02-namespace.t
 t/03-tag.t
-t/04-policy.t
 t/05-permission.t
 t/06-user.t
 t/07-has_object.t
-t/08-acl.t
 t/09-base.t
 t/10-search.t
 t/11-has_path.t

@@ -8,7 +8,6 @@ use Test::More;
 use Net::Fluidinfo::Object;
 use Net::Fluidinfo::Namespace;
 use Net::Fluidinfo::Tag;
-use Net::Fluidinfo::Policy;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 use Net::Fluidinfo::TestUtils;
@@ -123,23 +122,21 @@ foreach my $md5 (0, 1) {
     ok $tag->create;
     ok $object->tag($tag, integer => 0);
 
-    my @ids = $fin->search("$path = 0");
-    ok @ids == 1;
-    ok $ids[0] eq $object->id;
+    tolerate_delay {
+        my @ids = $fin->search("$path = 0");
+        if (@ids) {
+            ok @ids == 1;
+            ok $ids[0] eq $object->id;
+            1; # halt the wait loop no matter whether the assertion passes
+        }
+    };
 
     my $tag2 = $fin->get_tag($tag->path);
     ok $tag2->isa('Net::Fluidinfo::Tag');
     ok $tag2->path eq $tag->path;
     ok $tag->delete;
 
-    my $policy = $fin->get_policy($user, 'namespaces', 'create');
-    ok $policy->isa('Net::Fluidinfo::Policy');
-    ok $policy->username eq $user->username;
-    ok $policy->category eq 'namespaces';
-    ok $policy->action eq 'create';
-
     my $permission = $fin->get_permission('namespaces', $user->username, 'create');
-    ok $policy->isa('Net::Fluidinfo::Policy');
     ok $permission->category eq 'namespaces';
     ok $permission->action eq 'create';
 

@@ -34,6 +34,11 @@ for (my $i = -3; $i <= 3; ++$i){
 
 my @ids;
 
+tolerate_delay {
+    @ids = Net::Fluidinfo::Object->search($fin, "has $path");
+    @ids == @object_ids;
+};
+
 @ids = Net::Fluidinfo::Object->search($fin, "has $path");
 ok_sets_cmp \@ids, \@object_ids;
 

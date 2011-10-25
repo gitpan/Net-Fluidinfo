@@ -1,14 +1,43 @@
 package Net::Fluidinfo::Permission;
 use Moose;
-extends 'Net::Fluidinfo::ACL';
+extends 'Net::Fluidinfo::Base';
 
-has category => (is => 'ro', isa => 'Str');
-has path     => (is => 'ro', isa => 'Str');
-has action   => (is => 'ro', isa => 'Str');
+use MooseX::ClassAttribute;
+class_has Actions => (
+    is => 'ro',
+    isa => 'HashRef[ArrayRef[Str]]',
+    default => sub {{
+        'namespaces' => [qw(create update delete list control)],
+        'tags'       => [qw(update delete control)],
+        'tag-values' => [qw(write read delete control)]
+    }}
+);
+
+has category   => (is => 'ro', isa => 'Str');
+has path       => (is => 'ro', isa => 'Str');
+has action     => (is => 'ro', isa => 'Str');
+has policy     => (is => 'rw', isa => 'Str');
+has exceptions => (is => 'rw', isa => 'ArrayRef[Str]');
+
+sub is_open {
+    my $self = shift;
+    $self->policy eq 'open' 
+}
+
+sub is_closed {
+    my $self = shift;
+    $self->policy eq 'closed' 
+}
+
+sub has_exceptions {
+    my $self = shift;
+    @{$self->exceptions} != 0;
+}
 
 sub get {
-    my ($class, $fin, $category, $path, $action) = @_;
+    my ($class, $fin, $category, $path_or_has_path, $action) = @_;
 
+    my $path = $class->get_path_from_string_or_has_path($path_or_has_path);
     $fin->get(
         path       => $class->abs_path('permissions', $category, $path),
         query      => { action => $action },
@@ -40,6 +69,7 @@ sub update {
 }
 
 no Moose;
+no MooseX::ClassAttribute;
 __PACKAGE__->meta->make_immutable;
 
 1;
@@ -70,17 +100,15 @@ C<Net::Fluidinfo::Permission> models Fluidinfo permissions.
 
 =head1 USAGE
 
-=head2 Inheritance
-
-C<Net::Fluidinfo::Permission> is a subclass of L<Net::Fluidinfo::ACL>.
-
 =head2 Class methods
 
 =over
 
-=item Net::Fluidinfo::Permission->get($fin, $category, $path, $action)
+=item Net::Fluidinfo::Permission->get($fin, $category, $path_or_has_path, $action)
 
-Retrieves the permission on action C<$action>, for the category C<$category> and path C<$path>.
+Retrieves the permission on action C<$action>, for the category C<$category>
+and path extracted from C<$path>, which can be either a string with the very
+path, a namespace, or a tag.
 
 C<Net::Fluidinfo> provides a convenience shortcut for this method.
 

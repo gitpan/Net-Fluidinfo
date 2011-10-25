@@ -153,7 +153,9 @@ A description of this tag.
 
 =item indexed (required)
 
-A flag that tells Fluidinfo whether this tag should be indexed.
+A flag that tells Fluidinfo whether this tag should be indexed. This attribute
+mirrors the Fluidinfo API, but please note that Fluidinfo currently ignores
+its value, nowadays all tags are indexed.
 
 =item namespace (optional, but dependent)
 
@@ -208,7 +210,14 @@ rule is that the username fragment is case-insensitive, and the rest is not.
 
 =item $tag->create
 
-Creates the tag in Fluidinfo.
+Creates the tag in Fluidinfo. Please note that tags are created on the
+fly by Fluidinfo if they do not exist.
+
+Creating a tag by hand may be useful for example if you want to change
+the inherited permissions right away. That may be interesting if you
+are going to store sensitive data that would be by default readable.
+Other than that, it is recommended that you let Fluidinfo create tags
+as needed.
 
 =item $tag->update
 
@@ -230,6 +239,9 @@ tag for this attribute to be initialized.
 =item $tag->indexed
 
 A flag, indicates whether this tag is indexed in Fluidinfo.
+
+This predicate mirrors the Fluidinfo API. Nowadays all tags are indexed,
+so this predicate returns always true.
 
 =item $tag->namespace
 
