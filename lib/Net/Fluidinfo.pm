@@ -12,7 +12,7 @@ use Net::Fluidinfo::Tag;
 use Net::Fluidinfo::Permission;
 use Net::Fluidinfo::User;
 
-our $VERSION           = '0.43';
+our $VERSION           = '0.44';
 our $USER_AGENT        = "Net::Fluidinfo/$VERSION ($^O)";
 our $DEFAULT_PROTOCOL  = 'HTTP';
 our $DEFAULT_HOST      = 'fluiddb.fluidinfo.com';
@@ -382,7 +382,7 @@ Xavier Noria (FXN), E<lt>fxn@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2009-2011 Xavier Noria
+Copyright (C) 2009-2012 Xavier Noria
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published

@@ -395,18 +395,18 @@ in the first argument.
 =item Native values
 
 You need to specify the Fluidinfo type of native values using one of
-"null", "boolean", "integer", "float", "string", or "set":
+"null", "boolean", "integer", "float", "string", or "list_of_strings":
 
     $object->tag("fxn/rating", integer => 7);
 
 If C<$value> is C<undef> or an arrayref this is not required:
 
-    $object->tag("fxn/tags");                    # type null
-    $object->tag("fxn/tags", undef);             # type null
-    $object->tag("fxn/tags", ["perl", "moose"]); # type set
+    $object->tag("fxn/tags");                    # type null (inferred)
+    $object->tag("fxn/tags", undef);             # type null (inferred)
+    $object->tag("fxn/tags", ["perl", "moose"]); # type list_of_strings (inferred)
 
-The elements of arrayrefs are stringfied, since Fluidinfo sets are
-sets of strings.
+The elements of arrayrefs are stringfied if needed to ensure we send
+a list of strings.
 
 =item Non-native values
 
@@ -431,7 +431,7 @@ and also the type in list context:
     ($type, $value) = $object->value("fxn/rating");
 
 For native values the type is one of "null", "boolean", "integer", "float",
-"string", or "set". For non-native values the type is their MIME type.
+"string", or "list_of_strings". For non-native values the type is their MIME type.
 
 =back
 
@@ -466,7 +466,7 @@ Xavier Noria (FXN), E<lt>fxn@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2009-2011 Xavier Noria
+Copyright (C) 2009-2012 Xavier Noria
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
